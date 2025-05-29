@@ -25,7 +25,6 @@ func main() {
 		problems[i], problems[j] = problems[j], problems[i]
 	})
 
-	fmt.Println("Shuffled problems", problems)
 	if err != nil {
 		fmt.Println("Error reading CSV:", err)
 		return
@@ -35,15 +34,22 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for i, line := range problems {
-		question := line[0]
-		answer := strings.TrimSpace(line[1])
+		retries := 3
+		for retries > 0 {
+			question := line[0]
+			answer := strings.TrimSpace(line[1])
 
-		fmt.Printf("Problem #%d: %s = ", i+1, question)
-		scanner.Scan()
-		input := strings.TrimSpace(scanner.Text())
+			fmt.Printf("Problem #%d: %s = ", i+1, question)
+			scanner.Scan()
+			input := strings.TrimSpace(scanner.Text())
 
-		if input == answer {
-			score++
+			if input == answer {
+				score++
+				break
+			} else {
+				retries--
+				fmt.Printf("Wrong answer. %d retries left.\n", retries)
+			}
 		}
 	}
 
