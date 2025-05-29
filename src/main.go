@@ -34,8 +34,8 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for i, line := range problems {
-		retries := 3
-		for retries > 0 {
+		attemptsLeft := 3
+		for attemptsLeft > 0 {
 			question := line[0]
 			answer := strings.TrimSpace(line[1])
 
@@ -47,8 +47,13 @@ func main() {
 				score++
 				break
 			} else {
-				retries--
-				fmt.Printf("Wrong answer. %d retries left.\n", retries)
+				attemptsLeft--
+				if attemptsLeft == 0 {
+					fmt.Printf("You ran out of tries for this question. The correct answer is %s.\n", answer)
+					break
+				} else {
+					fmt.Printf("Wrong answer. You have %d tries left.\n", attemptsLeft)
+				}
 			}
 		}
 	}
